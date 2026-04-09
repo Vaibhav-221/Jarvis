@@ -62,14 +62,14 @@ if __name__ == "__main__":
 
             with sr.Microphone() as source:
                 print("Listening...")
-                audio = r.listen(source, timeout=5, phrase_time_limit=5)
+                audio = r.listen(source, timeout=5, phrase_time_limit=3)
             word = r.recognize_google(audio)
 
 
             if "jarvis" in word.lower():
-                speak("i am starting")
+                speak("ya go ahead")
                 # pause to let TTS finish before listening for command
-                time.sleep(0.8)
+                # time.sleep(0.5)
 
                 # Listen for command
                 with sr.Microphone() as source:
