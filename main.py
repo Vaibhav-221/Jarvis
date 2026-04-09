@@ -2,17 +2,37 @@ import speech_recognition as sr
 import webbrowser
 import pyttsx3
 import time
+
+# Initialize speech engine once
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+if voices:
+    engine.setProperty('voice', voices[0].id)
+engine.setProperty('rate', 170)
 import musicLabrary
 
 recognizer = sr.Recognizer()
-engine = pyttsx3.init('sapi5') 
 # voices = engine.getProperty('voices')
 # engine.setProperty('voice', voices[0].id)
 # engine.setProperty('rate', 170)
 
 def speak(text):
-    engine.say(text)
-    engine.runAndWait()
+    """Speak the given text using a fresh pyttsx3 engine.
+    Using the default driver (sapi5 on Windows) avoids driver‑specific
+    conflicts and works even when the microphone is active.
+    """
+    try:
+        _engine = pyttsx3.init()  # let pyttsx3 pick the appropriate driver
+        _engine.setProperty('rate', 170)
+        voices = _engine.getProperty('voices')
+        if voices:
+            _engine.setProperty('voice', voices[0].id)
+        _engine.say(text)
+        _engine.runAndWait()
+    except Exception as e:
+        print(f"SPEAK ERROR: {e}")
+    # Small pause to ensure audio finishes before we start listening again
+    time.sleep(0.8)
 
 def processCommand(c):
     if "open google" in c.lower():
@@ -42,14 +62,14 @@ if __name__ == "__main__":
 
             with sr.Microphone() as source:
                 print("Listening...")
-                audio = r.listen(source, timeout=5, phrase_time_limit=3)
+                audio = r.listen(source, timeout=5, phrase_time_limit=5)
             word = r.recognize_google(audio)
 
 
             if "jarvis" in word.lower():
                 speak("i am starting")
-
-
+                # pause to let TTS finish before listening for command
+                time.sleep(0.8)
 
                 # Listen for command
                 with sr.Microphone() as source:
