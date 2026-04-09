@@ -1,4 +1,13 @@
-import speech_recognitionas as sr
+import speech_recognition as sr
+import webbrowser
+import pyttsx3
 
+recognizer = sr.Recognizer()
+engine = pyttsx3.init() 
 
-if __name__ = "__main__":
+def speak(text) :
+     engine.say(text)
+     engine.runAndWait()
+
+if __name__ == "__main__":
+   speak("Hii i am Vaibhav Singh")
