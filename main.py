@@ -2,6 +2,7 @@ import speech_recognition as sr
 import webbrowser
 import pyttsx3
 import time
+import requests
 
 # Initialize speech engine once
 engine = pyttsx3.init('sapi5')
@@ -12,6 +13,7 @@ engine.setProperty('rate', 170)
 import musicLabrary
 
 recognizer = sr.Recognizer()
+newsapi = "5eee06fab56e42d9bd278df618ddcf6b"
 # voices = engine.getProperty('voices')
 # engine.setProperty('voice', voices[0].id)
 # engine.setProperty('rate', 170)
@@ -46,6 +48,20 @@ def processCommand(c):
         song = c.lower().split(" ")[1]
         link = musicLabrary.music[song]
         webbrowser.open(link)
+
+    elif "news" in c.lower():
+        r = requests.get(f"https://newsapi.org/v2/everything?q=tesla&from=2026-03-09&sortBy=publishedAt&apiKey=5eee06fab56e42d9bd278df618ddcf6b")
+        if r.status_code == 200:
+            # Parse the JSON response
+            data = r.json()
+            
+            # Extract the articles
+            articles = data.get('articles', [])
+            
+            # Print the headlines
+            for article in articles:
+                speak(article['title'])
+
 
     
 
