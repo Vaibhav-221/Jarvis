@@ -2,6 +2,7 @@ import speech_recognition as sr
 import webbrowser
 import pyttsx3
 import time
+from openai import OpenAI
 import requests
 
 # Initialize speech engine once
@@ -36,6 +37,20 @@ def speak(text):
     # Small pause to ensure audio finishes before we start listening again
     time.sleep(0.8)
 
+def aiProcess(command):
+    client = OpenAI(api_key="<Your Key Here>",
+    )
+
+    completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": "You are a virtual assistant named jarvis skilled in general tasks like Alexa and Google Cloud. Give short responses please"},
+        {"role": "user", "content": command}
+    ]
+    )
+    return completion.choices[0].message.content
+
+
 def processCommand(c):
     if "open google" in c.lower():
         webbrowser.open("https://google.com")
@@ -61,6 +76,10 @@ def processCommand(c):
             # Print the headlines
             for article in articles:
                 speak(article['title'])
+
+    else:
+        output = aiProcess(c)
+        speak(output)
 
 
     
