@@ -58,11 +58,14 @@ def processCommand(c):
         webbrowser.open("https://facebook.com")
     elif "open youtube" in c.lower():
         webbrowser.open("https://youtube.com")
+    elif "open linkedin" in c.lower():
+        webbrowser.open("https://www.linkedin.com/")
     
     elif c.lower().startswith("play"):
         song = c.lower().split(" ")[1]
         link = musicLabrary.music[song]
         webbrowser.open(link)
+        
 
     elif "news" in c.lower():
         r = requests.get(f"https://newsapi.org/v2/everything?q=tesla&from=2026-03-09&sortBy=publishedAt&apiKey=5eee06fab56e42d9bd278df618ddcf6b")
